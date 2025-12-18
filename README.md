@@ -1,7 +1,5 @@
-# Rydde App!!!
+# Rydde App nå med PHP!
 
-### Mer som dritt app fordi det ikke er php :(
+### Alle elsker php
 
-### Laget med express og greier, ikke gøy
-
-Endre db.example.js og session.example.js til db.js og session.js også fyll inn bruker informasjonen
+Endre db.example.php til db.js også fyll inn bruker informasjonen
