@@ -1,106 +1,15 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const sessionMiddleware = require("./session.js");
-const { conn } = require("./db.js");
+// const sessionMiddleware = require("./session.js");
+// const { conn } = require("./db.js");
 
 const route = express();
 const port = 1488;
 
 route.use(express.urlencoded({ extended: false }));
 route.use(express.json());
-route.use(sessionMiddleware);
-route.use(express.static("public"));
-
-function requireLogin(req, res, next) {
-    if (!req.session.user) {
-        return res.status(401).json({ redirect: "/login.html" });
-    }
-    next();
-}
-
-//##Offentlige Ruter##
-//user registration
-route.post("/submitUser", async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        const salt = await bcrypt.genSalt(10);
-        const hashedPwd = await bcrypt.hash(password, salt);
-
-        const userInsert = "INSERT INTO user (username, password) VALUES (?, ?)";
-        await conn(userInsert, [username, hashedPwd]);
-
-        res.json({ success: true, message: "Bruker registrert!" });
-    }
-    catch (err) {
-        console.error(err);
-        return res.status(500).json({ success: false, Error: "userReg: Error occured" });
-    };
-});
-
-//user Login
-route.post("/loginUser", async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        const sql = "SELECT * FROM user WHERE username = ?";
-        const rows = await conn(sql, [username]);
-
-        if (rows.length === 0) {
-            return res.status(400).json({ success: false, message: "Incorrect password or username" });
-        };
-
-        const user = rows[0];
-        const verifyPwd = await bcrypt.compare(password, user.password);
-
-        if (!verifyPwd || username !== user.username) {
-            return res.status(400).json({ success: false, message: "Incorrect password or username" });
-        };
-
-        req.session.user = { id: user.id, username: user.username };
-
-        res.json({ success: true, message: "Login successful" });
-    }
-    catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: "userLogin: Error occured" });
-    };
-});
-
-//logg ut
-route.get("/logout", async (req, res, next) => {
-    try {
-        req.session.destroy();
-        res.json({ success: true, message: "Logget ut" });
-    }
-    catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: "logout: Error occured" });
-    };
-});
-
-route.use("/checkLogged", requireLogin, async (req, res) => {
-    if (!req.session.user) {
-        return res.status(401).json({ redirect: "/login.html" });
-    };
-});
-
-// glemte passord lmao
-//  route.get("/debug", async (req, res) => {
-//      try {
-//          const pass = bcrypt.hash("some_pass", 10).then(console.log);
-
-//          res.json({ success: true, match: pass });
-//      }
-//     catch (err) {
-//          console.error(err);
-//          res.status(500).json({ success: false });
-//      }
-//  });
-
-//hent user session
-route.get("/fetchSession", requireLogin, async (req, res) => {
-    sessionData = req.session.user;
-    res.json({ success: true, data: sessionData });
-});
+// route.use(sessionMiddleware);
+// route.use(express.static("public"));
 
 //hent bruker data
 route.use("/fetchUsername", requireLogin, async (req, res) => {
