@@ -42,7 +42,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if ($stmt->execute()) {
                     $success = "Du er nå registrert";
-                } else {
+                }
+                else {
                     $error = "Kunne ikke registrere bruker";
                 }
                 $stmt->close();

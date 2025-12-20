@@ -1,38 +1,8 @@
-//redirect
-// async function redirectIf(){
-//     checklogged = await fetch("/checkLogged");
-//     res = await checklogged.json();
-
-//     if(res.redirect){
-//         window.location.href = res.redirect;
-//     };
-// };
-// redirectIf();
-
 const taskList = document.getElementById('task-div');
-let taskData = [];
+let tasks = [];
 
 //tegner elementene
-function renderTasks(task, sessionData){
-    switch (task.difficulty) {
-        case 1:
-            difficulty = "I";
-            break;
-        case 2:
-            difficulty = "II";
-            break;
-        case 3:
-            difficulty = "III";
-            break;
-    };
-
-     //regex for å rydde opp timestamp
-    const timestamp = task.date_added.replace(/T.*$/, '');
-
-    let compTimestamp = null;
-    if(task.comp_date){
-       compTimestamp = task.comp_date.replace(/T.*$/, '')
-    };
+function renderTasks(task, session){
 
     const wrapper = document.createElement('div');
     wrapper.classList.add('task-item');
@@ -50,11 +20,11 @@ function renderTasks(task, sessionData){
     taskDetails.classList.add('task-details');
     taskDetails.innerHTML = `
     <span class="task-label">Opprettet:</span>
-    <span class="task-value">${timestamp}</span>
+    <span class="task-value">${task.added_date}</span>
     <span class="task-label">Av:</span>
-    <span class="task-value">${task.author_username}</span>
+    <span class="task-value">${task.author_name}</span>
     <span class="task-label">Vanskelighet:</span>
-    <span class="task-value diff-${task.difficulty}">${difficulty}</span>`;
+    <span class="task-value diff-${task.difficulty}">${task.difficulty}</span>`;
 
     const taskDescriptor = document.createElement('div');
     taskDescriptor.classList.add('task-descriptor');
@@ -73,7 +43,7 @@ function renderTasks(task, sessionData){
     const taskStatus = document.createElement('h2');
     taskStatus.classList.add('task-status');
 
-    if (!(task.comp_username === null)){
+    if (!(task.completorUser === null)){
         taskStatus.classList.add('completed');
         taskStatus.textContent = "Fullført";
     }
@@ -94,8 +64,7 @@ function renderTasks(task, sessionData){
 
     const rDetailDiv = document.createElement('div');
     rDetailDiv.classList.add('right-detail-div');
-
-    if (sessionData.data.id === task.author_id && task.comp_date === null) {
+    if (session == task.author_id && task.completed_date === null) {
         const taskBtnCom = document.createElement('button');
         taskBtnCom.classList.add('task-btn');
         taskBtnCom.classList.add('complete');
@@ -112,7 +81,7 @@ function renderTasks(task, sessionData){
         rDetailDiv.appendChild(taskBtnCom);
         taskRight.appendChild(rDetailDiv);
     }
-    else if (task.comp_date === null) {
+    else if (task.completed_date === null) {
         rDetailDiv.classList.add('task-details');
         rDetailDiv.innerHTML = `<span class="task-label">Ingen har fullført oppgaven endå</span>`;
 
@@ -122,9 +91,9 @@ function renderTasks(task, sessionData){
         rDetailDiv.classList.add('task-details');
         rDetailDiv.innerHTML = `
             <span class="task-label">Fullført av:</span>
-            <span class="task-value">${task.comp_username}</span>
+            <span class="task-value">${task.completorUser}</span>
             <span class="task-label">Dato:</span>
-            <span class="task-value">${compTimestamp}</span>
+            <span class="task-value">${task.completed_date}</span>
             `;
         taskRight.appendChild(rDetailDiv);
     };
@@ -142,22 +111,22 @@ function renderTasks(task, sessionData){
     taskList.appendChild(wrapper);
 };
 
-async function loadTasks(){
-    //Loader alt fra databasen :)
-    const response = await fetch("/taskData");
-    const sessionResponse = await fetch("/fetchSession");
-    taskData = await response.json();
-    const sessionData = await sessionResponse.json();
+function loadTasks(){
+    fetch('tasks/TaskHandler.php', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'loadTasks' })
+    })
+    .then(res => res.json())
+    .then(taskResponse => {
+        taskList.innerHTML = '';
+        tasks = taskResponse;
+        console.log("taskData:", taskResponse);
 
-    // console.log(taskData);
-    // console.log(sessionData);
-
-    taskList.innerHTML = '';
-
-    taskData.data.forEach(task => {
-        renderTasks(task, sessionData);
+        taskResponse.taskData.forEach(task => {
+            renderTasks(task, taskResponse.session);
+        });
     });
-
 };
 
 //Oppgave markering
@@ -167,37 +136,36 @@ document.addEventListener('click', async (e) => {
     if(e.target.classList.contains("complete")){
         btn = e.target;
 
-        const task = taskData.data.find(t => t.id == btn.value);
+        const task = tasks.taskData.find(t => t.id == btn.value);
         if (!task) {
             alert("Error: Kunne ikke finne taskId");
             return;
         };
 
-        comp_username = prompt("Skriv inn brukernavnet til personen som fullførte oppgaven");
-        if (!comp_username) return;
+        completorUsername = prompt("Skriv inn brukernavnet til personen som fullførte oppgaven");
+        if (!completorUsername) return;
 
-        const reqData = { taskId: task.id, comp_username };
-        const responseReq = await fetch("/compTask", {
+        fetch("tasks/TaskHandler.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(reqData)
+            body: JSON.stringify({ action: 'completeTask', taskId: task.id, completorUsername: completorUsername })
+        })
+        .then(res => res.json())
+        .then(response => {
+            if(response.success){
+                alert(response.message);
+                loadTasks();
+            }
+            else{
+                alert(response.message);
+            };
         });
-
-        const result = await responseReq.json();
-
-        if(result.success){
-            alert(result.message);
-            loadTasks();
-        }
-        else{
-            alert(result.message);
-        };
     };
 
     if(e.target.classList.contains("delete")){
         btn = e.target;
 
-        const task = taskData.data.find(t => t.id == btn.value);
+        const task = tasks.taskData.find(t => t.id == btn.value);
 
         if (!task) {
             alert("Error: Kunne ikke finne taskId");
@@ -206,22 +174,21 @@ document.addEventListener('click', async (e) => {
 
         if (!confirm("Er du sikker på at du vil slette oppgaven?")) return;
 
-        const reqData = { taskId: task.id };
-        const response = await fetch("/deleteTask", {
+        const response = await fetch("tasks/TaskHandler.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(reqData)
+            body: JSON.stringify({ taskId: task.id, action: 'deleteTask' })
+        })
+        .then(res => res.json())
+        .then(response => {
+            if (response.success) {
+                alert(response.message);
+                loadTasks();
+            }
+            else {
+                alert(response.message);
+            };
         });
-
-        const result = await response.json();
-
-        if(result.success){
-            alert(result.message);
-            loadTasks();
-        }
-        else{
-            alert(result.message);
-        };
     };
 });
 

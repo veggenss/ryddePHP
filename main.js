@@ -72,8 +72,6 @@ route.get("/taskData", requireLogin, async (req, res) => {
             return match ? { ...item, comp_username: match.comp_username, comp_date: match.date_completed } : { ...item, comp_username: null, comp_date: null };
         });
 
-
-
         return res.json({ success: true, data: taskData });
     }
     catch(err){

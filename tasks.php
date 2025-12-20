@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if(!isset($_SESSION['user_id'])){
+    header('Location: login.php');
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +16,8 @@
 
     <title>Rydde hjelper</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <script src="js/displayTasks.js" defer></script>
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>

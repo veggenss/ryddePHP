@@ -27,7 +27,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $_SESSION['username'] = $user['username'];
         // $_SESSION['profile_picture'] = $user['profile_picture'];
 
-        header('Location: tasks.html'); // redirecter til hovedsiden
+        header('Location: tasks.php'); // redirecter til hovedsiden
         exit();
     }
 }
