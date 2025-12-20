@@ -1,26 +1,26 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
-// const sessionMiddleware = require("./session.js");
-// const { conn } = require("./db.js");
+// const express = require("express");
+// const bcrypt = require("bcrypt");
+// // const sessionMiddleware = require("./session.js");
+// // const { conn } = require("./db.js");
 
-const route = express();
-const port = 1488;
+// const route = express();
+// const port = 1488;
 
-route.use(express.urlencoded({ extended: false }));
-route.use(express.json());
+// route.use(express.urlencoded({ extended: false }));
+// route.use(express.json());
 // route.use(sessionMiddleware);
 // route.use(express.static("public"));
 
 //hent bruker data
-route.use("/fetchUsername", requireLogin, async (req, res) => {
-    try {
-        res.json({ success: true, data: req.session.user.username });
-    }
-    catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: "fetchUserData: Error occured" });
-    };
-});
+// route.use("/fetchUsername", requireLogin, async (req, res) => {
+//     try {
+//         res.json({ success: true, data: req.session.user.username });
+//     }
+//     catch (err) {
+//         console.error(err);
+//         res.status(500).json({ success: false, message: "fetchUserData: Error occured" });
+//     };
+// });
 
 //oppdater bruker data
 route.post("/updateUserData", requireLogin, async (req, res) => {
@@ -56,80 +56,80 @@ route.post("/updateUserData", requireLogin, async (req, res) => {
 });
 
 //hent oppgave data
-route.get("/taskData", requireLogin, async (req, res) => {
-    try{
-        const taskQuery = `
-            SELECT t.*, tc.category_name, u.username AS author_username FROM task t
-            INNER JOIN user u ON t.author_id = u.id
-            INNER JOIN task_category tc ON t.category = tc.id`;
-        const taskObject = await conn(taskQuery);
+// route.get("/taskData", requireLogin, async (req, res) => {
+//     try{
+//         const taskQuery = `
+//             SELECT t.*, tc.category_name, u.username AS author_username FROM task t
+//             INNER JOIN user u ON t.author_id = u.id
+//             INNER JOIN task_category tc ON t.category = tc.id`;
+//         const taskObject = await conn(taskQuery);
 
-        const compQuery = "SELECT tc.*, u.username AS comp_username FROM completed_task tc INNER JOIN user u on tc.user_id = u.id";
-        const compTaskData = await conn(compQuery);
+//         const compQuery = "SELECT tc.*, u.username AS comp_username FROM completed_task tc INNER JOIN user u on tc.user_id = u.id";
+//         const compTaskData = await conn(compQuery);
 
-        const taskData = taskObject.map(item => {
-            const match = compTaskData.find(c => c.task_id === item.id);
-            return match ? { ...item, comp_username: match.comp_username, comp_date: match.date_completed } : { ...item, comp_username: null, comp_date: null };
-        });
+//         const taskData = taskObject.map(item => {
+//             const match = compTaskData.find(c => c.task_id === item.id);
+//             return match ? { ...item, comp_username: match.comp_username, comp_date: match.date_completed } : { ...item, comp_username: null, comp_date: null };
+//         });
 
-        return res.json({ success: true, data: taskData });
-    }
-    catch(err){
-        console.error(err);
-        res.status(500).json({ success: false, message: "taskData: Error occured" });
-    };
-});
+//         return res.json({ success: true, data: taskData });
+//     }
+//     catch(err){
+//         console.error(err);
+//         res.status(500).json({ success: false, message: "taskData: Error occured" });
+//     };
+// });
 
 //opprett ny oppgave
-route.post("/createTask", requireLogin, async (req, res) => {
-    try{
-        const { name, difficulty, description, categoryStr } = req.body;
-        const author_id = req.session.user.id;
-        const category = parseInt(categoryStr);
+// route.post("/createTask", requireLogin, async (req, res) => {
+//     try{
+//         const { name, difficulty, description, categoryStr } = req.body;
+//         const author_id = req.session.user.id;
+//         const category = parseInt(categoryStr);
 
-        const sql = "INSERT INTO task (name, description, difficulty, category, author_id) VALUES (?, ?, ?, ?, ?)";
-        await conn(sql, [name, description, difficulty, category, author_id]);
+//         const sql = "INSERT INTO task (name, description, difficulty, category, author_id) VALUES (?, ?, ?, ?, ?)";
+//         await conn(sql, [name, description, difficulty, category, author_id]);
 
-        res.json({ success: true, message: "Task Inserted" });
-    }
-    catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: "createTask: Error occured" });
-    };
-});
+//         res.json({ success: true, message: "Task Inserted" });
+//     }
+//     catch (err) {
+//         console.error(err);
+//         res.status(500).json({ success: false, message: "createTask: Error occured" });
+//     };
+// });
 
 //ferdig oppgave
-route.post("/compTask", requireLogin, async (req, res) => {
-    try {
-        const { taskId, comp_username } = req.body;
-        compQuery = "INSERT INTO completed_task (task_id, user_id) SELECT ?, u.id FROM user u WHERE u.username = ?";
-        compRes = await conn(compQuery, [taskId, comp_username]);
+// route.post("/compTask", requireLogin, async (req, res) => {
+//     try {
+//         const { taskId, comp_username } = req.body;
+//         compQuery = "INSERT INTO completed_task (task_id, user_id) SELECT ?, u.id FROM user u WHERE u.username = ?";
+//         compRes = await conn(compQuery, [taskId, comp_username]);
 
-        if (compRes.affectedRows === 0) {
-            return res.status(400).json({ success: false, message: "Brukernavnet finnes ikke" });
-        };
-        res.json({ success: true, message: 'Oppgave markert "Fullført"' });
-    }
-    catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false,message: "compTask: Error occured" });
-    };
-});
+//         if (compRes.affectedRows === 0) {
+//             return res.status(400).json({ success: false, message: "Brukernavnet finnes ikke" });
+//         };
+//         res.json({ success: true, message: 'Oppgave markert "Fullført"' });
+//     }
+//     catch (err) {
+//         console.error(err);
+//         res.status(500).json({ success: false,message: "compTask: Error occured" });
+//     };
+// });
 
 //task deleted
-route.post("/deleteTask", requireLogin, async (req, res) => {
-    try {
-        const { taskId } = req.body;
-        deleteQuery = "DELETE FROM task WHERE id = ?";
-        deleteRes = await conn(deleteQuery, [taskId]);
+// route.post("/deleteTask", requireLogin, async (req, res) => {
+//     try {
+//         const { taskId } = req.body;
+//         deleteQuery = "DELETE FROM task WHERE id = ?";
+//         deleteRes = await conn(deleteQuery, [taskId]);
 
-        res.json({ success: true, message: "Oppgave slettet" });
-    }
-    catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: "deleteTask: Error occured" });
-    };
-});
+//         res.json({ success: true, message: "Oppgave slettet" });
+//     }
+//     catch (err) {
+//         console.error(err);
+//         res.status(500).json({ success: false, message: "deleteTask: Error occured" });
+//     };
+// });
 
 //hent brukere for poeng podium
 route.get("/getMemberTasks", requireLogin, async (req, res) => {
