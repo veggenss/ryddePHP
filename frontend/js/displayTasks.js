@@ -2,7 +2,7 @@ const taskList = document.getElementById('task-div');
 let tasks = [];
 
 function loadTasks(){
-    fetch('/utvikling/ryddePHP/backend/Handlers/TaskHandler.php', {
+    fetch('/ryddePHP/backend/Handlers/TaskHandler.php', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'loadTasks' })
@@ -145,7 +145,7 @@ document.addEventListener('click', async (e) => {
         completorUsername = prompt("Skriv inn brukernavnet til personen som fullførte oppgaven");
         if (!completorUsername) return;
 
-        fetch("/utvikling/ryddePHP/backend/Handlers/TaskHandler.php", {
+        fetch("/ryddePHP/backend/Handlers/TaskHandler.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ action: 'completeTask', taskId: task.id, completorUsername: completorUsername })
@@ -174,7 +174,7 @@ document.addEventListener('click', async (e) => {
 
         if (!confirm("Er du sikker på at du vil slette oppgaven?")) return;
 
-        fetch("/utvikling/ryddePHP/backend/Handlers/TaskHandler.php", {
+        fetch("/ryddePHP/backend/Handlers/TaskHandler.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ taskId: task.id, action: 'deleteTask' })

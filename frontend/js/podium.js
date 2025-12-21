@@ -2,7 +2,7 @@ const podiumDiv = document.getElementById('podium-div');
 const userDetail = document.getElementById('user-task-details');
 
 async function getMemberTasks(){
-    fetch('/utvikling/ryddePHP/backend/Handlers/TaskHandler.php', {
+    fetch('/ryddePHP/backend/Handlers/TaskHandler.php', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: 'getMemberTasks' })
