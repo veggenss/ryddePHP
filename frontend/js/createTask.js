@@ -1,13 +1,3 @@
-//redirect
-async function redirectIf(){
-    checklogged = await fetch("/checkLogged");
-    res = await checklogged.json();
-
-    if(res.redirect){
-        window.location.href = res.redirect;
-    };
-};
-redirectIf();
 
 //create task :3
 document.getElementById("create-form").addEventListener("submit", async (e) => {

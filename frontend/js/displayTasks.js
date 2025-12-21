@@ -1,6 +1,24 @@
 const taskList = document.getElementById('task-div');
 let tasks = [];
 
+function loadTasks(){
+    fetch('/utvikling/ryddePHP/backend/Handlers/TaskHandler.php', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'loadTasks' })
+    })
+    .then(res => res.json())
+    .then(taskResponse => {
+        taskList.innerHTML = '';
+        tasks = taskResponse;
+        console.log("taskData:", taskResponse);
+
+        taskResponse.taskData.forEach(task => {
+            renderTasks(task, taskResponse.session);
+        });
+    });
+};
+
 //tegner elementene
 function renderTasks(task, session){
 
@@ -111,24 +129,6 @@ function renderTasks(task, session){
     taskList.appendChild(wrapper);
 };
 
-function loadTasks(){
-    fetch('tasks/TaskHandler.php', {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'loadTasks' })
-    })
-    .then(res => res.json())
-    .then(taskResponse => {
-        taskList.innerHTML = '';
-        tasks = taskResponse;
-        console.log("taskData:", taskResponse);
-
-        taskResponse.taskData.forEach(task => {
-            renderTasks(task, taskResponse.session);
-        });
-    });
-};
-
 //Oppgave markering
 document.addEventListener('click', async (e) => {
     // e.preventDefault();
@@ -145,7 +145,7 @@ document.addEventListener('click', async (e) => {
         completorUsername = prompt("Skriv inn brukernavnet til personen som fullførte oppgaven");
         if (!completorUsername) return;
 
-        fetch("tasks/TaskHandler.php", {
+        fetch("/utvikling/ryddePHP/backend/Handlers/TaskHandler.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ action: 'completeTask', taskId: task.id, completorUsername: completorUsername })
@@ -174,7 +174,7 @@ document.addEventListener('click', async (e) => {
 
         if (!confirm("Er du sikker på at du vil slette oppgaven?")) return;
 
-        const response = await fetch("tasks/TaskHandler.php", {
+        fetch("/utvikling/ryddePHP/backend/Handlers/TaskHandler.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ taskId: task.id, action: 'deleteTask' })

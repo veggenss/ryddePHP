@@ -44,7 +44,7 @@ class TaskService{
         return true;
     }
 
-    /** Meget spesiel phpTractor dritt
+    /** Meget spesiel phpActor dritt
      * @return array<int, array{
      *     userId: int,
      *     username: string,

@@ -20,15 +20,6 @@ if(!isset($_SESSION['user_id'])){
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-   <!--<nav>
-       <ul>
-           <li><a href="tasks.html">Oppgaver</a></li>
-           <li><a href="podium.html">Podium</a></li>
-           <li><a href="family.html">Familie</a></li>
-           <li><a href="#">Profil</a></li>
-       </ul>
-   </nav>-->
-
    <div class="wrapper">
        <section class="main-con">
            <form class="form user" id="user-form">

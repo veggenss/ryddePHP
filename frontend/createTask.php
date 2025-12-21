@@ -16,16 +16,16 @@ if(!isset($_SESSION['user_id'])){
 
     <title>Rydde hjelper</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <script src="../js/createTask.js" defer></script>
-    <link rel="stylesheet" href="../css/index.css">
+    <script src="/js/createTask.js" defer></script>
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
     <nav>
         <ul>
-            <li><a href="../tasks.php">Oppgaver</a></li>
-            <li><a href="../podium.php">Podium</a></li>
-            <li><a href="../family.php">Familie</a></li>
-            <li><a href="../profile.php">Profil</a></li>
+            <li><a href="tasks.php">Oppgaver</a></li>
+            <li><a href="podium.php">Podium</a></li>
+            <li><a href="family.php">Familie</a></li>
+            <li><a href="profile.php">Profil</a></li>
         </ul>
     </nav>
 

@@ -1,33 +1,26 @@
 <?php
 session_start();
-require_once 'db.php';
+require_once '../backend/db.php';
+require_once '../backend/Services/AuthService.php';
 
-$mysqli = dbConnection();
+if($_SESSION['user_id']){
+    header('Location: tasks.php');
+    exit();
+}
+
+$conn = dbConnection();
+$authService = new AuthService($conn);
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $username = $_POST['username'];
-
-    // sjekker brukernavn og passord opp mot databasen
-    $sql = "SELECT * FROM user WHERE username = ?";
-    $stmt = $mysqli->prepare($sql);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
-
-    // verifiser brukernavn og passord og lager session hvis de er riktig
-    if (!$user){
-        $error = "Bruker finnes ikke";
-    }
-    elseif(!password_verify($_POST['password'], $user['password'])) {
-        $error = "Ugyldig brukernavn eller passord";
+    $userData = ['username' => $_POST['username'], 'password' => $_POST['password']];
+    $user = $authService->userLogin($userData);
+    if(!$user['status']){
+        $error = $user['message'];
     }
     else{
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $user['username'];
-        // $_SESSION['profile_picture'] = $user['profile_picture'];
-
-        header('Location: tasks.php'); // redirecter til hovedsiden
+        $_SESSION['user_id'] = $user['user']['id'];
+        $_SESSION['username'] = $user['user']['username'];
+        header('Location: tasks.php');
         exit();
     }
 }
@@ -53,8 +46,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             <?php if(isset($error)):?>
                 <div class="error"><?php echo $error;?></div>
-            <?php elseif(isset($success)):?>
-                <div class="positive"><?php echo $success;?></div>
             <?php endif;?>
 
             <form id="loginForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
