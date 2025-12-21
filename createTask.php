@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if(!isset($_SESSION['user_id'])){
+    header('Location: login.php');
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,10 +22,10 @@
 <body>
     <nav>
         <ul>
-            <li><a href="../tasks.html">Oppgaver</a></li>
-            <li><a href="../podium.html">Podium</a></li>
-            <li><a href="../family.html">Familie</a></li>
-            <li><a href="../profile.html">Profil</a></li>
+            <li><a href="../tasks.php">Oppgaver</a></li>
+            <li><a href="../podium.php">Podium</a></li>
+            <li><a href="../family.php">Familie</a></li>
+            <li><a href="../profile.php">Profil</a></li>
         </ul>
     </nav>
 

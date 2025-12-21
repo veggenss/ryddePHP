@@ -132,38 +132,38 @@ route.post("/updateUserData", requireLogin, async (req, res) => {
 // });
 
 //hent brukere for poeng podium
-route.get("/getMemberTasks", requireLogin, async (req, res) => {
-    try {
-        const getMemberQuery = `
-                SELECT
-                    u.username,
-                    u.id AS user_id,
-                    c.id AS completed_id,
-                    c.task_id AS completed_task_id,
-                    c.date_completed AS completed_date_completed,
-                    t.id AS task_id,
-                    t.name AS task_name,
-                    t.description AS task_description,
-                    t.difficulty AS task_difficulty,
-                    t.category AS task_category,
-                    t.date_added AS task_date_added,
-                    author.username AS author_username
-                FROM user u
-                LEFT JOIN completed_task c
-                    ON u.id = c.user_id
-                LEFT JOIN task t
-                    ON t.id = c.task_id
-                LEFT JOIN user author
-                    ON t.author_id = author.id`;
-        const fetchedMembers = await conn(getMemberQuery);
-        res.json({ success: true, memberData: fetchedMembers });
-    }
-    catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: "getFamilyUsers: Error occured" });
-    };
-});
+// route.get("/getMemberTasks", requireLogin, async (req, res) => {
+//     try {
+//         const getMemberQuery = `
+//                 SELECT
+//                     u.username,
+//                     u.id AS user_id,
+//                     c.id AS completed_id,
+//                     c.task_id AS completed_task_id,
+//                     c.date_completed AS completed_date_completed,
+//                     t.id AS task_id,
+//                     t.name AS task_name,
+//                     t.description AS task_description,
+//                     t.difficulty AS task_difficulty,
+//                     t.category AS task_category,
+//                     t.date_added AS task_date_added,
+//                     author.username AS author_username
+//                 FROM user u
+//                 LEFT JOIN completed_task c
+//                     ON u.id = c.user_id
+//                 LEFT JOIN task t
+//                     ON t.id = c.task_id
+//                 LEFT JOIN user author
+//                     ON t.author_id = author.id`;
+//         const fetchedMembers = await conn(getMemberQuery);
+//         res.json({ success: true, memberData: fetchedMembers });
+//     }
+//     catch (err) {
+//         console.error(err);
+//         res.status(500).json({ success: false, message: "getFamilyUsers: Error occured" });
+//     };
+// });
 
 //Må legge til familie funksjon
 
-route.listen(port, () => console.log("Server running on port", port));
+// route.listen(port, () => console.log("Server running on port", port));

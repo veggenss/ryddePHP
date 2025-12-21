@@ -14,6 +14,17 @@ $taskService = new TaskService($conn);
 
 switch($action){
 
+    case 'createTask':
+        $createData = $data['data'];
+        $response = $taskService->createTask($createData);
+        if (!$response) {
+            echo json_encode(["success" => false, "message" => "Error: Noe gikk galt!"]);
+        }
+        else{
+            echo json_encode(["success" => true, "message" => "Oppgave opprettet!"]);
+        }
+        break;
+
     case 'loadTasks':
         $tasks = $taskService->getTasks();
         echo json_encode(["success" => true, "taskData" => $tasks, "session" => $_SESSION['user_id']]);
@@ -40,6 +51,11 @@ switch($action){
         else{
              echo json_encode(["success" => true, "message" => "Oppgave slettet!"]);
         }
+        break;
+
+    case 'getMemberTasks':
+        $tasks = $taskService->getMemberTasks();
+        echo json_encode(["success" => true, "taskData" => array_values($tasks)]);
         break;
 
     default:
