@@ -245,6 +245,21 @@ nav a:hover {
     border: 1.5px solid orange;
 }
 
+.error{
+    background-color: #ffe0e0;
+    color: #990000;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+.positive {
+    background-color: #e0ffe0;
+    color: #007700;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 15px 0 15px 0;
+}
+
 .right-detail-div{
     display: flex;
     width: 100%;

@@ -6,12 +6,6 @@ class AuthService{
         $this->conn = $conn;
     }
 
-    /**
-     * @param array<int, array{
-     * username: string,
-     * password: string
-     }> $userData
-     */
     public function registerUser(array $userData):bool{
         $stmt = $this->conn->prepare('INSERT INTO user (username, password) VALUES (?, ?)');
         $stmt->bind_param("ss", $userData['username'], $userData['password']);

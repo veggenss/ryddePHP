@@ -1,10 +1,31 @@
 <?php
 session_start();
+require '../backend/db.php';
+require '../backend/Services/TaskService.php';
+
+$conn = dbConnection();
+$taskService = new TaskService($conn);
 
 if(!isset($_SESSION['user_id'])){
     header('Location: login.php');
 }
 
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $taskData = [
+        "name" => $_POST['name'],
+        "description" => $_POST['description'],
+        "difficulty" => $_POST['difficulty'],
+        "category" => $_POST['category'],
+        "author_id" => $_SESSION['user_id']
+    ];
+
+    if($taskService->createTask($taskData)){
+        $success = "Oppgave opprettet";
+    }
+    else{
+        $error = "Noe gikk galt!";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,8 +37,7 @@ if(!isset($_SESSION['user_id'])){
 
     <title>Rydde hjelper</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <script src="/js/createTask.js" defer></script>
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
     <nav>
@@ -31,7 +51,14 @@ if(!isset($_SESSION['user_id'])){
 
     <div class="wrapper">
         <div class="main-con">
-            <form id="create-form" class="form create">
+
+            <?php if(isset($error)):?>
+                <div class="error"><?php echo $error;?></div>
+            <?php elseif(isset($success)):?>
+                <div class="positive"><?php echo $success;?></div>
+            <?php endif;?>
+
+            <form id="create-form" class="form create" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
                 <div class="header-con">
                     <h2 class="header-title">Opprett Oppgave</h2>
                     <button class="header-btn" type="submit">Opprett</button>

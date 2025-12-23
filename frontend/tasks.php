@@ -34,7 +34,7 @@ if(!isset($_SESSION['user_id'])){
        <section class="main-con">
            <div class="header-con">
                <h2 class="header-title">Mine Ryddeoppgaver</h2>
-               <a class="header-btn" href="subPage/createTask.html">Lag Oppgave</a>
+               <a class="header-btn" href="createTask.php">Lag Oppgave</a>
            </div>
 
            <div id="task-div" class="task-list">

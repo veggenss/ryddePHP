@@ -6,17 +6,13 @@ class TaskService{
         $this->conn = $conn;
     }
 
-    public function createTask(object $createData):bool{
-
-        return true;
-    }
-
     public function getTasks():array{
         $result = $this->conn->query('
         SELECT t.*, tc.category_name, completor.username AS completorUser, author.username AS author_name FROM task t
-        INNER JOIN user completor ON t.completorUser = completor.id
+        LEFT JOIN user completor ON t.completorUser = completor.id
         INNER JOIN user author ON t.author_id = author.id
-        INNER JOIN task_category tc ON t.category = tc.id');
+        INNER JOIN task_category tc ON t.category = tc.id;
+        ');
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
@@ -25,7 +21,9 @@ class TaskService{
         $stmt = $this->conn->prepare('
         UPDATE task t
         INNER JOIN user u ON u.username = ?
-        SET completed_date = CURDATE(), completorUser = u.id WHERE t.id = ?');
+        SET completed_date = CURDATE(), completorUser = u.id WHERE t.id = ?;
+        ');
+
         $stmt->bind_param("si", $completorUser, $taskId);
 
         $result = $stmt->execute();
@@ -35,7 +33,7 @@ class TaskService{
     }
 
     public function deleteTask(int $taskId):bool{
-        $stmt = $this->conn->prepare('DELETE FROM task WHERE id = ?');
+        $stmt = $this->conn->prepare('DELETE FROM task WHERE id = ?;');
         $stmt->bind_param("i", $taskId);
 
         $result = $stmt->execute();
@@ -44,24 +42,6 @@ class TaskService{
         return true;
     }
 
-    /** Meget spesiel phpActor dritt
-     * @return array<int, array{
-     *     userId: int,
-     *     username: string,
-     *     sumPoints: int,
-     *     tasks: array<int, array{
-     *         taskId: int,
-     *         taskName: string,
-     *         taskDescription: string,
-     *         taskDifficulty: int,
-     *         category: string,
-     *         added_date: string,
-     *         author_name: string,
-     *         completed_date: string
-     *     }>
-     * }>
-     */
-
     public function getMemberTasks():array{
         $result = [];
 
@@ -69,7 +49,8 @@ class TaskService{
         SELECT t.*, tc.category_name, completor.id AS completor_id, completor.username AS completor_username, author.username AS author_name FROM task t
         INNER JOIN user completor ON t.completorUser = completor.id
         INNER JOIN user author ON t.author_id = author.id
-        INNER JOIN task_category tc ON t.category = tc.id');
+        INNER JOIN task_category tc ON t.category = tc.id;
+        ');
 
         while ($row = $query->fetch_assoc()) {
             $user_id = $row['completor_id'];
@@ -97,5 +78,14 @@ class TaskService{
         }
 
         return $result;
+    }
+
+    public function createTask(array $taskData):bool{
+        $stmt = $this->conn->prepare('INSERT INTO task (name, description, difficulty, category, author_id) VALUES (?, ?, ?, ?, ?);');
+        $stmt->bind_param("ssiii", $taskData['name'], $taskData['description'], $taskData['difficulty'], $taskData['category'], $taskData['author_id']);
+
+        $result = $stmt->execute();
+        if (!$result) return false;
+        return true;
     }
 }
