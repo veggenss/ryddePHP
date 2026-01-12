@@ -37,7 +37,7 @@ if(!isset($_SESSION['user_id'])){
                    <input name="repeatPwd" class="form-input user" type="password">
                </div>
            </form>
-           <a class="header-btn return-btn" href="tasks.html">Tilbake</a>
+           <a class="header-btn return-btn" href="tasks.php">Tilbake</a>
            <a id="logout-btn" class="header-btn logout-btn" href="logout.php"><button type="button">Logg ut</button></a>
        </section>
    </div>

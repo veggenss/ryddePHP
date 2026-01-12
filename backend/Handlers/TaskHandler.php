@@ -15,8 +15,7 @@ $taskService = new TaskService($conn);
 switch($action){
 
     case 'createTask':
-        $createData = $data['data'];
-        $response = $taskService->createTask($createData);
+        $response = $taskService->createTask($data['data']);
         if (!$response) {
             echo json_encode(["success" => false, "message" => "Error: Noe gikk galt!"]);
         }
