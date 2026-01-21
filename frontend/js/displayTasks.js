@@ -148,7 +148,7 @@ document.addEventListener('click', async (e) => {
         fetch("/ryddePHP/backend/Handlers/TaskHandler.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ action: 'completeTask', taskId: task.id, completorUsername: completorUsername })
+            body: JSON.stringify({ action: 'completeTask', taskData: task, completorUsername: completorUsername })
         })
         .then(res => res.json())
         .then(response => {
@@ -177,7 +177,7 @@ document.addEventListener('click', async (e) => {
         fetch("/ryddePHP/backend/Handlers/TaskHandler.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ taskId: task.id, action: 'deleteTask' })
+            body: JSON.stringify({ taskData: task, action: 'deleteTask' })
         })
         .then(res => res.json())
         .then(response => {

@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+include 'navigation.php';
 if(!isset($_SESSION['user_id'])){
     header('Location: login.php');
 }
@@ -21,15 +21,6 @@ if(!isset($_SESSION['user_id'])){
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-   <nav>
-       <ul>
-           <li><a href="#">Oppgaver</a></li>
-           <li><a href="podium.php">Podium</a></li>
-           <li><a href="family.php">Familie</a></li>
-           <li><a href="profile.php">Profil</a></li>
-       </ul>
-   </nav>
-
    <div class="wrapper">
        <section class="main-con">
            <div class="header-con">

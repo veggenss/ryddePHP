@@ -17,27 +17,28 @@ class TaskService{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function completeTask(string $completorUser, int $taskId):bool{
+    public function completeTask(string $completorUser, array $taskData):bool{
         $stmt = $this->conn->prepare('
         UPDATE task t
         INNER JOIN user u ON u.username = ?
         SET completed_date = CURDATE(), completorUser = u.id WHERE t.id = ?;
         ');
 
-        $stmt->bind_param("si", $completorUser, $taskId);
-
+        $stmt->bind_param("si", $completorUser, $taskData['id']);
         $result = $stmt->execute();
-        if (!$result) return false;
+
+        if (!$result)
+            return false;
 
         return true;
     }
 
-    public function deleteTask(int $taskId):bool{
+    public function deleteTask(int $taskData):bool{
         $stmt = $this->conn->prepare('DELETE FROM task WHERE id = ?;');
-        $stmt->bind_param("i", $taskId);
-
+        $stmt->bind_param("i", $taskData['id']);
         $result = $stmt->execute();
-        if (!$result) return false;
+        if (!$result)
+            return false;
 
         return true;
     }
@@ -83,9 +84,10 @@ class TaskService{
     public function createTask(array $taskData):bool{
         $stmt = $this->conn->prepare('INSERT INTO task (name, description, difficulty, category, author_id) VALUES (?, ?, ?, ?, ?);');
         $stmt->bind_param("ssiii", $taskData['name'], $taskData['description'], $taskData['difficulty'], $taskData['category'], $taskData['author_id']);
-
         $result = $stmt->execute();
-        if (!$result) return false;
+        if (!$result)
+            return false;
+
         return true;
     }
 }
