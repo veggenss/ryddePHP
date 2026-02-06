@@ -1,1 +1,3 @@
-db.php
+/backend/db.php
+/vendor/
+/composer.json

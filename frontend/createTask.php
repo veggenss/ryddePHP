@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'navigation.php';
 require '../backend/db.php';
 require '../backend/Services/TaskService.php';
 
@@ -40,66 +41,60 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="tasks.php">Oppgaver</a></li>
-            <li><a href="podium.php">Podium</a></li>
-            <li><a href="family.php">Familie</a></li>
-            <li><a href="profile.php">Profil</a></li>
-        </ul>
-    </nav>
+<div class="wrapper">
+    <div class="main-con">
 
-    <div class="wrapper">
-        <div class="main-con">
+        <?php
+            if(isset($error)){
+                echo '<div class="error">$error</div>';
+            }
+            if(isset($success)){
+                echo '<div class="positive">$success</div>';
+            }
+        ?>
 
-            <?php if(isset($error)):?>
-                <div class="error"><?php echo $error;?></div>
-            <?php elseif(isset($success)):?>
-                <div class="positive"><?php echo $success;?></div>
-            <?php endif;?>
+        <form id="create-form" class="form create" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
+            <div class="header-con">
+                <h2 class="header-title">Opprett Oppgave</h2>
+                <button class="header-btn" type="submit">Opprett</button>
+            </div>
 
-            <form id="create-form" class="form create" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
-                <div class="header-con">
-                    <h2 class="header-title">Opprett Oppgave</h2>
-                    <button class="header-btn" type="submit">Opprett</button>
+            <div class="create-row">
+                <div class="create-field left">
+                    <label class="form-label" >Navn</label>
+                    <input name="name" class="form-input" placeholder="f.eks: Stua er skitten" required>
+                </div>
+                <div class="create-field right">
+                    <label class="form-label create-right" >Vanskelighet</label>
+                    <select name="difficulty" class="create-select create-right" id="create-difficulty" required>
+                        <option value="1">I</option>
+                        <option value="2">II</option>
+                        <option value="3">III</option>
+                    </select>
+                </div>
+            </div>
+            <br>
+
+            <div class="create-row">
+                <div class="create-field left">
+                    <label class="form-label" >Beskrivelse</label>
+                    <input name="description" class="form-input" placeholder="f.eks: Du må rengjøre ALT HELE HUSET" required>
                 </div>
 
-                <div class="create-row">
-                    <div class="create-field left">
-                        <label class="form-label" >Navn</label>
-                        <input name="name" class="form-input" placeholder="f.eks: Stua er skitten" required>
-                    </div>
-                    <div class="create-field right">
-                        <label class="form-label create-right" >Vanskelighet</label>
-                        <select name="difficulty" class="create-select create-right" id="create-difficulty" required>
-                            <option value="1">I</option>
-                            <option value="2">II</option>
-                            <option value="3">III</option>
-                        </select>
-                    </div>
+                <div class="create-field right">
+                <label class="form-label" >Kategori</label>
+                    <select name="category" class="create-select" id="create-category" required>
+                        <option value="1">Rydding</option>
+                        <option value="2">Vasking</option>
+                        <option value="3">Innkjøp</option>
+                        <option value="4">Planlegging</option>
+                        <option value="5">Passing</option>
+                        <option value="6">Annet</option>
+                    </select>
                 </div>
-                <br>
-
-                <div class="create-row">
-                    <div class="create-field left">
-                        <label class="form-label" >Beskrivelse</label>
-                        <input name="description" class="form-input" placeholder="f.eks: Du må rengjøre ALT HELE HUSET" required>
-                    </div>
-
-                    <div class="create-field right">
-                    <label class="form-label" >Kategori</label>
-                        <select name="category" class="create-select" id="create-category" required>
-                            <option value="1">Rydding</option>
-                            <option value="2">Vasking</option>
-                            <option value="3">Innkjøp</option>
-                            <option value="4">Planlegging</option>
-                            <option value="5">Passing</option>
-                            <option value="6">Annet</option>
-                        </select>
-                    </div>
-                </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
+</div>
 </body>
 </html>

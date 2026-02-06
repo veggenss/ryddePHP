@@ -50,32 +50,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/logRegStyle.css">
 </head>
 <body>
-    <div class="page-wrapper">
-        <div class="auth-container">
+<div class="page-wrapper">
+    <div class="auth-container">
 
-            <h1 class="auth-title">Registrer Bruker</h1>
+        <h1 class="auth-title">Registrer Bruker</h1>
 
-            <?php if(isset($error)):?>
-                <div class="error"><?php echo $error;?></div>
-            <?php elseif(isset($success)):?>
-                <div class="positive"><?php echo $success;?></div>
-            <?php endif;?>
+        <?php
+            if(isset($error)){
+                echo '<div class="error">$error</div>';
+            }
+            if(isset($success)){
+                echo '<div class="positive">$success</div>';
+            }
+        ?>
 
-            <form id="registerForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
-                <p>Brukernavn</p>
-                <input placeholder="Brukernavn" type="text" name="username">
+        <form id="registerForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
+            <p>Brukernavn</p>
+            <input placeholder="Brukernavn" type="text" name="username">
 
-                <p>Passord</p>
-                <input placeholder="Passord" type="password" name="password">
+            <p>Passord</p>
+            <input placeholder="Passord" type="password" name="password">
 
-                <button type="submit">Registrer</button>
-            </form>
+            <button type="submit">Registrer</button>
+        </form>
 
-            <div class="auth-link">
-                Trykk <a href="login.php">her</a> for å logge inn
-            </div>
-
+        <div class="auth-link">
+            Trykk <a href="login.php">her</a> for å logge inn
         </div>
+
     </div>
+</div>
 </body>
 </html>

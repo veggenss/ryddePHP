@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+include 'navigation.php';
 if(!isset($_SESSION['user_id'])){
     header('Location: login.php');
 }
@@ -20,26 +20,26 @@ if(!isset($_SESSION['user_id'])){
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-   <div class="wrapper">
-       <section class="main-con">
-           <form class="form user" id="user-form">
-               <div class="header-con">
-                   <h2 class="header-title">Profil</h2>
-                   <button class="header-btn" type="submit">Oppdater</button>
-               </div>
+<div class="wrapper">
+    <section class="main-con">
+        <form class="form user" id="user-form">
+            <div class="header-con">
+                <h2 class="header-title">Profil</h2>
+                <button class="header-btn" type="submit">Oppdater</button>
+            </div>
 
-               <div class="user-row">
-                   <label class="form-label">Brukernavn:</label>
-                   <input name="username" class="form-input user" id="username" placeholder="">
-                   <label class="form-label">Nytt Passord</label>
-                   <input name="newPwd" class="form-input user" type="password">
-                   <label class="form-label">Gjenta Nytt Passord</label>
-                   <input name="repeatPwd" class="form-input user" type="password">
-               </div>
-           </form>
-           <a class="header-btn return-btn" href="tasks.php">Tilbake</a>
-           <a id="logout-btn" class="header-btn logout-btn" href="logout.php"><button type="button">Logg ut</button></a>
-       </section>
-   </div>
+            <div class="user-row">
+                <label class="form-label">Brukernavn:</label>
+                <input name="username" class="form-input user" id="username" placeholder="">
+                <label class="form-label">Nytt Passord</label>
+                <input name="newPwd" class="form-input user" type="password">
+                <label class="form-label">Gjenta Nytt Passord</label>
+                <input name="repeatPwd" class="form-input user" type="password">
+            </div>
+        </form>
+        <a class="header-btn return-btn" href="tasks.php">Tilbake</a>
+        <a id="logout-btn" class="header-btn logout-btn" href="logout.php"><button type="button">Logg ut</button></a>
+    </section>
+</div>
 </body>
 </html>

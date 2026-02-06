@@ -31,7 +31,7 @@ switch($action){
         $compName = $data['completorUsername'] ?? null;
         $taskData = $data['taskData'] ?? null;
 
-        if ($_SESSION['user_id'] !== $taskData['author_id']){
+        if ($_SESSION['user_id'] !== $taskData['author_id'] || $_SESSION['role'] !== 1){
             echo json_encode(["success" => false, "message" => "SessionID og AuthorID Passer ikke!"]);
             break;
         }
@@ -49,7 +49,7 @@ switch($action){
         $compName = $data['completorUsername'] ?? null;
         $taskData = $data['taskData'] ?? null;
 
-        if ($_SESSION['user_id'] !== $taskData['author_id']){
+        if ($_SESSION['user_id'] !== $taskData['author_id'] || $_SESSION['role'] !== 1){
             echo json_encode(["success" => false, "message" => "SessionID og AuthorID Passer ikke!"]);
             break;
         }

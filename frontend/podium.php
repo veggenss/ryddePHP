@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+include 'navigation.php';
 if(!isset($_SESSION['user_id'])){
     header('Location: login.php');
 }
@@ -20,24 +20,15 @@ if(!isset($_SESSION['user_id'])){
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-   <nav>
-       <ul>
-           <li><a href="tasks.php">Oppgaver</a></li>
-           <li><a href="#">Podium</a></li>
-           <li><a href="family.php">Familie</a></li>
-           <li><a href="profile.php">Profil</a></li>
-       </ul>
-   </nav>
+<div class="wrapper">
+    <section class="main-con">
+        <div class="header-con">
+            <h2 class="header-title">Poeng Podium</h2>
+        </div>
 
-   <div class="wrapper">
-       <section class="main-con">
-           <div class="header-con">
-               <h2 class="header-title">Poeng Podium</h2>
-           </div>
-
-           <div id="podium-div" class="podium-list">
-           </div>
-       </section>
-   </div>
+        <div id="podium-div" class="podium-list">
+        </div>
+    </section>
+</div>
 </body>
 </html>

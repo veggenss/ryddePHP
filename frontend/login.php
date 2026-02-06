@@ -40,29 +40,31 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <link rel="stylesheet" href="css/logRegStyle.css">
 </head>
 <body>
-    <div class="page-wrapper">
-        <div class="auth-container">
+<div class="page-wrapper">
+    <div class="auth-container">
 
-            <h1 class="auth-title">Logg Inn</h1>
+        <h1 class="auth-title">Logg Inn</h1>
 
-            <?php if(isset($error)):?>
-                <div class="error"><?php echo $error;?></div>
-            <?php endif;?>
+        <?php
+            if(isset($error)){
+                echo '<div class="error">$error</div>';
+            }
+        ?>
 
-            <form id="loginForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
-                <p>Brukernavn</p>
-                <input placeholder="Brukernavn" type="text" name="username" required>
+        <form id="loginForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
+            <p>Brukernavn</p>
+            <input placeholder="Brukernavn" type="text" name="username" required>
 
-                <p>Passord</p>
-                <input placeholder="Passord" type="password" name="password" required>
+            <p>Passord</p>
+            <input placeholder="Passord" type="password" name="password" required>
 
-                <button type="submit">Logg inn</button>
-            </form>
+            <button type="submit">Logg inn</button>
+        </form>
 
-            <div class="auth-link">
-                Trykk <a href="register.php">her</a> for å registrere bruker
-            </div>
+        <div class="auth-link">
+            Trykk <a href="register.php">her</a> for å registrere bruker
         </div>
     </div>
+</div>
 </body>
 </html>

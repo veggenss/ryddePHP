@@ -21,16 +21,16 @@ if(!isset($_SESSION['user_id'])){
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-   <div class="wrapper">
-       <section class="main-con">
-           <div class="header-con">
-               <h2 class="header-title">Mine Ryddeoppgaver</h2>
-               <a class="header-btn" href="createTask.php">Lag Oppgave</a>
-           </div>
+<div class="wrapper">
+    <section class="main-con">
+        <div class="header-con">
+            <h2 class="header-title">Mine Ryddeoppgaver</h2>
+            <a class="header-btn" href="createTask.php">Lag Oppgave</a>
+        </div>
 
-           <div id="task-div" class="task-list">
-           </div>
-       </section>
-   </div>
+        <div id="task-div" class="task-list">
+        </div>
+    </section>
+</div>
 </body>
 </html>

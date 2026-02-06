@@ -7,8 +7,10 @@ class AuthService{
     }
 
     public function registerUser(array $userData):bool{
+        $pwdHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
         $stmt = $this->conn->prepare('INSERT INTO user (username, password) VALUES (?, ?)');
-        $stmt->bind_param("ss", $userData['username'], $userData['password']);
+        $stmt->bind_param("ss", $userData['username'], $pwdHash);
         if($stmt->execute()){
             return true;
         }
