@@ -57,10 +57,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <?php
             if(isset($error)){
-                echo '<div class="error">$error</div>';
+                echo '<div class="error">' . $error . '</div>';
             }
             if(isset($success)){
-                echo '<div class="positive">$success</div>';
+                echo '<div class="positive">' . $success . '</div>';
             }
         ?>
 

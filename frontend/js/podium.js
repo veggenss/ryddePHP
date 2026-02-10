@@ -20,7 +20,7 @@ async function getMemberTasks(){
 function renderPodium(user){
     //tell antall oppgaver gjort og total poeng
     let totalCompTasks = 0;
-    user.tasks.forEach(task => { totalCompTasks++ });
+    user.tasks.forEach(totalCompTasks++);
 
     const userPlace = document.createElement('div');
     userPlace.classList.add('user-placement');
@@ -135,6 +135,6 @@ document.addEventListener('click', (e) => {
     if (!taskDiv) return;
 
     taskDiv.style.display = taskDiv.style.display === 'block' ? 'none' : 'block';
-})
+});
 
 window.onload = getMemberTasks();

@@ -11,13 +11,12 @@ function loadTasks(){
     .then(taskResponse => {
         taskList.innerHTML = '';
         tasks = taskResponse;
-        console.log("taskData:", taskResponse);
 
         taskResponse.taskData.forEach(task => {
             renderTasks(task, taskResponse.session);
-        });
-    });
-};
+        })
+    })
+}
 
 //tegner elementene
 function renderTasks(task, session){
@@ -68,7 +67,7 @@ function renderTasks(task, session){
     else{
         taskStatus.classList.add('pending');
         taskStatus.textContent = "Pågående";
-    };
+    }
 
     const categoryDiv = document.createElement('div');
     categoryDiv.classList.add('category-div');
@@ -114,7 +113,7 @@ function renderTasks(task, session){
             <span class="task-value">${task.completed_date}</span>
             `;
         taskRight.appendChild(rDetailDiv);
-    };
+    }
 
     //nesting
     wrapper.appendChild(taskLeft);
@@ -127,7 +126,7 @@ function renderTasks(task, session){
     taskDescriptor.appendChild(taskDescription);
 
     taskList.appendChild(wrapper);
-};
+}
 
 //Oppgave markering
 document.addEventListener('click', async (e) => {
@@ -140,9 +139,9 @@ document.addEventListener('click', async (e) => {
         if (!task) {
             alert("Error: Kunne ikke finne taskId");
             return;
-        };
+        }
 
-        completorUsername = prompt("Skriv inn brukernavnet til personen som fullførte oppgaven");
+        const completorUsername = prompt("Skriv inn brukernavnet til personen som fullførte oppgaven");
         if (!completorUsername) return;
 
         fetch("/ryddePHP/backend/Handlers/TaskHandler.php", {
@@ -152,25 +151,21 @@ document.addEventListener('click', async (e) => {
         })
         .then(res => res.json())
         .then(response => {
+            alert(response.message);
             if(response.success){
-                alert(response.message);
                 loadTasks();
             }
-            else{
-                alert(response.message);
-            };
-        });
-    };
+        })
+    }
 
     if(e.target.classList.contains("delete")){
         btn = e.target;
 
         const task = tasks.taskData.find(t => t.id == btn.value);
-
         if (!task) {
             alert("Error: Kunne ikke finne taskId");
             return;
-        };
+        }
 
         if (!confirm("Er du sikker på at du vil slette oppgaven?")) return;
 
@@ -181,15 +176,12 @@ document.addEventListener('click', async (e) => {
         })
         .then(res => res.json())
         .then(response => {
+            alert(response.message);
             if (response.success) {
-                alert(response.message);
                 loadTasks();
             }
-            else {
-                alert(response.message);
-            };
-        });
-    };
+        })
+    }
 });
 
 window.onload = loadTasks();

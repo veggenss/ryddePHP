@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     else{
         $_SESSION['user_id'] = $user['user']['id'];
         $_SESSION['username'] = $user['user']['username'];
-        $_SESSION['role'] = $user['user']['role'];
+        $_SESSION['privilege'] = $user['user']['privilege'];
         header('Location: tasks.php');
         exit();
     }
@@ -47,7 +47,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         <?php
             if(isset($error)){
-                echo '<div class="error">$error</div>';
+                echo '<div class="error">' . $error . '</div>';
             }
         ?>
 

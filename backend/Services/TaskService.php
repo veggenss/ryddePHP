@@ -13,18 +13,17 @@ class TaskService{
         INNER JOIN user author ON t.author_id = author.id
         INNER JOIN task_category tc ON t.category = tc.id;
         ');
-
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function completeTask(string $completorUser, array $taskData):bool{
+    public function completeTask(string $completorUser, int $taskData):bool{
         $stmt = $this->conn->prepare('
         UPDATE task t
         INNER JOIN user u ON u.username = ?
         SET completed_date = CURDATE(), completorUser = u.id WHERE t.id = ?;
         ');
 
-        $stmt->bind_param("si", $completorUser, $taskData['id']);
+        $stmt->bind_param("si", $completorUser, $taskData);
         $result = $stmt->execute();
 
         if (!$result)
@@ -35,7 +34,7 @@ class TaskService{
 
     public function deleteTask(int $taskData):bool{
         $stmt = $this->conn->prepare('DELETE FROM task WHERE id = ?;');
-        $stmt->bind_param("i", $taskData['id']);
+        $stmt->bind_param("i", $taskData);
         $result = $stmt->execute();
         if (!$result)
             return false;

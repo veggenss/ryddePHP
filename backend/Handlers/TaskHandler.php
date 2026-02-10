@@ -36,7 +36,7 @@ switch($action){
             break;
         }
 
-        $response = $taskService->completeTask($compName, $taskData);
+        $response = $taskService->completeTask($compName, $taskData['id']);
         if (!$response) {
             echo json_encode(["success" => false, "message" => "Error: Noe gikk galt!"]);
         }
@@ -49,12 +49,12 @@ switch($action){
         $compName = $data['completorUsername'] ?? null;
         $taskData = $data['taskData'] ?? null;
 
-        if ($_SESSION['user_id'] !== $taskData['author_id'] || $_SESSION['role'] !== 1){
-            echo json_encode(["success" => false, "message" => "SessionID og AuthorID Passer ikke!"]);
+        if ($_SESSION['user_id'] !== $taskData['author_id'] && $_SESSION['role'] !== 1){
+            echo json_encode(["success" => false, "message" => "SessionID og AuthorID Passer ikke!", "debug1" => $_SESSION['user_id'], "debug2" => $taskData]);
             break;
         }
 
-        $response = $taskService->deleteTask($data['taskId']);
+        $response = $taskService->deleteTask($taskData['id']);
         if(!$response){
              echo json_encode(["success" => false, "message" => "Error: Noe gikk galt!"]);
         }

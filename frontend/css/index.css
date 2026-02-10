@@ -63,7 +63,7 @@ nav a:hover {
 
 /*Universal styling*/
 .wrapper{
-    margin: 65px auto 0 auto;
+    margin: 45px auto 0 auto;
     padding: 24px;
     max-width: 782px;
 }
@@ -206,8 +206,8 @@ nav a:hover {
     flex-direction: column;
     align-items: flex-end;
     justify-content: space-between;
-    width: 50%;
-    margin-left: 50px;
+    flex-shrink: 1;
+    margin-left: auto;
 }
 
 .category-div{
@@ -386,39 +386,36 @@ nav a:hover {
     margin-bottom: 12px;
 }
 
-/*media scaling*/
-@media (max-width: 900px) {
+/*fuck css*/
 
-    nav a {
+/*media scaling*/
+@media (max-width: 800px) {
+
+    /*nav a {
         font-size: 1.1rem;
         padding: 8px 14px;
-    }
+    }*/
 
-    .header-title {
+    /*.header-title {
         font-size: 22px;
-    }
+    }*/
 
-    .header-btn {
+    /*.header-btn {
         font-size: 16px;
         padding: 6px 14px;
+    }*/
+
+    /*.task-right {
+        max-width: 40%;
+        margin-left: 20px;
     }
+
+    .task-details {
+        font-size: 13px;
+    }*/
 }
 
-@media (max-width: 700px) {
-
-    .wrapper {
-        padding: 16px;
-        margin-top: 55px;
-    }
-
-    nav {
-        height: 58px;
-    }
-
-    nav a {
-        font-size: 1rem;
-        padding: 6px 10px;
-    }
+@media (max-width: 716px) {
 
     .task-item {
         flex-direction: column;
@@ -450,72 +447,19 @@ nav a:hover {
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
 
-    body {
-        font-size: 14px;
+    .wrapper {
+        padding: 2px;
+        margin-top: 0px;
     }
 
-    .main-con {
-        padding: 16px;
-    }
-
-    .header-con {
-        margin-bottom: 30px;
-    }
-
-    .header-title {
-        font-size: 20px;
-    }
-
-    .header-btn {
-        font-size: 14px;
-        padding: 6px 12px;
-    }
-
-    .create-row {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .create-field.left,
-    .create-field.right {
-        width: 100%;
-        margin-right: 0;
-    }
-
-    .form-input,
-    .create-select {
-        font-size: 13px;
-        padding: 8px 10px;
-    }
-
-    .task-name {
-        font-size: 18px;
-    }
-}
-
-@media (max-width: 380px) {
-
-    nav ul {
-        gap: 2px;
+    nav {
+        height: 58px;
     }
 
     nav a {
-        padding: 4px 6px;
-        font-size: 0.9rem;
-    }
-
-    .header-title {
-        font-size: 18px;
-    }
-
-    .task-btn {
-        width: 100%;
-    }
-
-    .right-detail-div {
-        flex-direction: column;
-        align-items: stretch;
+        font-size: 1.1rem;
+        padding: 6px 10px;
     }
 }
